@@ -20,6 +20,7 @@
     "express-async-errors": "^3.1.1",
     "express-json-validator-middleware": "^2.0.0",
     "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.6",
     "redis": "^2.8.0",
     "shortid": "^2.2.14",

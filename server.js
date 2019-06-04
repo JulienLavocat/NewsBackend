@@ -16,6 +16,7 @@ app.use(require("./routers"));
 app.use(require("./errorHandler"));
 
 start(process.argv[2]);
+//test();
 
 async function start(silent = true) {
     try {
@@ -35,6 +36,10 @@ async function start(silent = true) {
         console.log(error);
         process.exit(-1);
     }
+}
+
+function test() {
+
 }
 
 
