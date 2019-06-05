@@ -10,7 +10,7 @@ module.exports = async function (req, res, next) {
         if(!key)
             throw new HttpError("permission-denied", "Invalid API key");
         
-        const appId = await redis.getAppId(key);
+        const appId = await redis.authenticateKey(key);
         if(appId === null)
             throw new HttpError("permission-denied", "Invalid API key");
 
