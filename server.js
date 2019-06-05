@@ -24,13 +24,13 @@ async function start(silent = true) {
         if (silent)
             console.log("Connected to database");
 
-        require("./lib/redis").connect(() => {
+        await require("./lib/redis").connect();
+        if (silent)
+            console.log("Connected to Redis");
+        
+        app.listen(process.env.appPort, process.env.appHost, () => {
             if (silent)
-                console.log("Connected to Redis");
-            app.listen(process.env.appPort, process.env.appHost, () => {
-                if (silent)
-                    console.log(`Listenning on ${process.env.appHost}:${process.env.appPort}`);
-            });
+                console.log(`Listenning on ${process.env.appHost}:${process.env.appPort}`);
         });
     } catch (error) {
         console.log(error);
