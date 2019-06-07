@@ -1,14 +1,14 @@
 {
-  "name": "auth",
+  "name": "newsbackend",
   "version": "0.0.0",
-  "description": "Auth Service for GameDB",
+  "description": "Backend for my new app",
   "main": "server.js",
   "scripts": {
     "test": "mocha tests --exit"
   },
   "repository": {
     "type": "git",
-    "url": "https://git.gamedb.xyz/GameDB/Auth.git"
+    "url": "https://github.com/JulienLavocat/.git"
   },
   "author": "Julien Lavocat",
   "license": "ISC",

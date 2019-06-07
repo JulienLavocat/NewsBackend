@@ -1,6 +1,5 @@
 const router = require("express").Router();
 
-router.use("/", require("./service"));
-router.use("/users/", require("./users"));
+router.get("/", (req, res) => res.send({service: "news"}));
 
 module.exports = router;
