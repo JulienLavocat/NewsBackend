@@ -3,10 +3,9 @@ const HttpError = require("simplified-http-errors").HttpError;
 
 exports.fetch = async (req, res) => {
    
-    try {
-        
-        
-
+    try {   
+        const result = await db.findArticles();
+        res.send(result);
     } catch (error) {
         throw error;
     }
