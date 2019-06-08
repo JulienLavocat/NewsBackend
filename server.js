@@ -16,7 +16,8 @@ app.use(require("./routers"));
 app.use(require("./errorHandler"));
 
 start(process.argv[2]);
-//test();
+
+require("./lib/job").start();
 
 async function start(silent = true) {
     try {
@@ -37,10 +38,5 @@ async function start(silent = true) {
         process.exit(-1);
     }
 }
-
-function test() {
-
-}
-
 
 module.exports = app;
