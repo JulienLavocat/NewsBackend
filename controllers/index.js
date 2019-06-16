@@ -3,11 +3,11 @@ const HttpError = require("simplified-http-errors").HttpError;
 
 exports.fetch = async (req, res) => {
 
-    //Args validation
-    const params = validateFetch(req.query);
-
     try {
-        const result = await db.findArticles();
+        //Args validation
+        const params = validateFetch(req.query);
+
+        const result = await db.getFrom(params.from);
         res.send(result);
     } catch (error) {
         throw error;
@@ -25,8 +25,13 @@ exports.latest = async (req, res) => {
 }
 
 function validateFetch(query) {
-    const from = parseInt(query.from);
-    if (from === NaN)
+
+    if(!query.from)
+        throw new HttpError("failed-precondition", "missing from parameters");
+
+    const from = Number.parseInt(query.from);
+
+    if (isNaN(from))
         throw new HttpError("invalid-argument", "from should be a valid integer");
     if (from < 0)
         throw new HttpError("invalid-argument", "from should be a equals or greater than 0");
