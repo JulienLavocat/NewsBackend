@@ -11,6 +11,8 @@ app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(require("express").static("public"));
+
 app.use(require("./routers"));
 
 app.use(require("./errorHandler"));
