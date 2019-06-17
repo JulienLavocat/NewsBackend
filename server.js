@@ -19,7 +19,7 @@ app.use(require("./errorHandler"));
 
 start(process.argv[2]);
 
-//require("./lib/job").start();
+require("./lib/job").start();
 
 async function start(silent = true) {
     try {
