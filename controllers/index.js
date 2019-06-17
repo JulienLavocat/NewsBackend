@@ -1,4 +1,5 @@
 const db = require("../lib/mongo");
+const redis = require("../lib/redis");
 const HttpError = require("simplified-http-errors").HttpError;
 
 exports.fetch = async (req, res) => {
@@ -16,7 +17,11 @@ exports.fetch = async (req, res) => {
 
 exports.latest = async (req, res) => {
     try {
-        const result = await db.getLatest();
+        let result = await redis.getLatest();
+        if(result === null) {
+            result = await getAndCacheLatest();
+        }
+        
         res.send(result);
     } catch (error) {
         throw error;
@@ -35,4 +40,25 @@ function validateFetch(query) {
     if (from < 0)
         throw new HttpError("invalid-argument", "from should be a equals or greater than 0");
     return { from };
+}
+
+async function getAndCacheLatest() {
+    const result = await db.getLatest();
+    const updated = [];
+    result.forEach(e => {
+        updated.push({
+            id: e.id,
+            source: e.source,
+            author: e.author,
+            title: e.title,
+            description: e.description,
+            url: e.url,
+            imageUrl: e.urlToImage,
+            publishedAt: e.publishedAt,
+            content: e.content,
+            hash: e.hash
+        });
+    });
+    await redis.cacheLatest(updated);
+    return updated;
 }
