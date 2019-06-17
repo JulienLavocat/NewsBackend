@@ -2,12 +2,16 @@ const db = require("../lib/mongo");
 const redis = require("../lib/redis");
 const HttpError = require("simplified-http-errors").HttpError;
 
-exports.fetch = async (req, res) => {
+exports.from = async (req, res) => {
 
     try {
         const params = validateFetch(req.query);
 
-        const result = await db.getFrom(params.from);
+        let result = await redis.getFrom(params.from);
+        if(result === null) {
+            result = await getAndCacheFrom(params.from);
+        }
+
         res.send(result);
     } catch (error) {
         throw error;
@@ -71,5 +75,26 @@ async function getAndCacheLatest() {
         });
     });
     await redis.cacheLatest(updated);
+    return updated;
+}
+
+async function getAndCacheFrom(from) {
+    const result = await db.getFrom(from);
+    const updated = [];
+    result.forEach(e => {
+        updated.push({
+            id: e._id,
+            source: e.source,
+            author: e.author,
+            title: e.title,
+            description: e.description,
+            url: e.url,
+            imageUrl: e.urlToImage,
+            publishedAt: e.publishedAt,
+            content: e.content,
+            hash: e.hash
+        });
+    });
+    await redis.cacheFrom(from, updated);
     return updated;
 }

@@ -3,7 +3,7 @@ const controller = require("../controllers");
 
 router.get("/", (req, res) => res.send({service: "news"}));
 
-router.get("/fetch", controller.fetch);
+router.get("/from", controller.from);
 router.get("/latest", controller.latest);
 router.get("/count", controller.count);
 

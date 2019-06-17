@@ -30,6 +30,9 @@ async function start(silent = true) {
         await require("./lib/redis").connect();
         if (silent)
             console.log("Connected to Redis");
+
+        //Cleanning cache
+        await require("./lib/redis").invalidateCache();
         
         app.listen(process.env.appPort, process.env.appHost, () => {
             if (silent)
