@@ -4,7 +4,6 @@ const HttpError = require("simplified-http-errors").HttpError;
 exports.fetch = async (req, res) => {
 
     try {
-        //Args validation
         const params = validateFetch(req.query);
 
         const result = await db.getFrom(params.from);
