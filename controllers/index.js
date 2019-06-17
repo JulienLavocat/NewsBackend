@@ -28,6 +28,17 @@ exports.latest = async (req, res) => {
     }
 }
 
+exports.count = async (req, res) => {
+    try {
+        res.send({
+            articleCount: await db.getCount()
+        })
+
+    } catch (error) {
+        throw new HttpError("internal", error.message);
+    }
+}
+
 function validateFetch(query) {
 
     if(!query.from)
@@ -47,7 +58,7 @@ async function getAndCacheLatest() {
     const updated = [];
     result.forEach(e => {
         updated.push({
-            id: e.id,
+            id: e._id,
             source: e.source,
             author: e.author,
             title: e.title,
