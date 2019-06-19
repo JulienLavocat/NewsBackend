@@ -32,6 +32,15 @@ exports.latest = async (req, res) => {
     }
 }
 
+exports.sources = (req, res) => {
+    res.send({
+        "google-news-fr": "Google News (France)",
+        "le-monde": "Le Monde",
+        "les-echos": "Les Echos",
+        "liberation": "Libération",
+    });
+}
+
 exports.count = async (req, res) => {
     try {
         res.send({
