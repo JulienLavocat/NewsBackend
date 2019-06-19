@@ -58,30 +58,29 @@ function validateFetch(query) {
 }
 
 async function getAndCacheLatest() {
-    const result = await db.getLatest();
-    const updated = [];
-    result.forEach(e => {
-        updated.push({
-            id: e._id,
-            source: e.source,
-            author: e.author,
-            title: e.title,
-            description: e.description,
-            url: e.url,
-            imageUrl: e.urlToImage,
-            publishedAt: e.publishedAt,
-            content: e.content,
-            hash: e.hash
-        });
-    });
-    await redis.cacheLatest(updated);
-    return updated;
+    try {
+        const result = await db.getLatest();
+        const views = generateViews(result);
+        await redis.cacheLatest(views);
+        return views;
+    } catch (error) {
+        throw error;
+    }
+}
+async function getAndCacheFrom(from) {
+    try {
+        const result = await db.getFrom(from);
+        const views = generateViews(result);
+        await redis.cacheFrom(from, views);
+        return views;
+    } catch (error) {
+        throw error;
+    }
 }
 
-async function getAndCacheFrom(from) {
-    const result = await db.getFrom(from);
+function generateViews(results) {
     const updated = [];
-    result.forEach(e => {
+    results.forEach(e => {
         updated.push({
             id: e._id,
             source: e.source,
@@ -89,12 +88,11 @@ async function getAndCacheFrom(from) {
             title: e.title,
             description: e.description,
             url: e.url,
-            imageUrl: e.urlToImage,
+            thumbnail: e.urlToImage,
             publishedAt: e.publishedAt,
             content: e.content,
             hash: e.hash
         });
     });
-    await redis.cacheFrom(from, updated);
     return updated;
 }
